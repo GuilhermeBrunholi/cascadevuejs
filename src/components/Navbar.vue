@@ -27,6 +27,18 @@
             <span class="sr-only">(current)</span>
           </router-link>
         </li>
+        <li class="nav-item active">
+          <router-link class="navbar-brand" to="/Clipboard">
+            Clipboard
+            <span class="sr-only">(current)</span>
+          </router-link>
+        </li>
+        <li class="nav-item active">
+          <router-link class="navbar-brand" to="/Clipboard2">
+            Clipboard2
+            <span class="sr-only">(current)</span>
+          </router-link>
+        </li>
       </ul>
     </div>
   </nav>
