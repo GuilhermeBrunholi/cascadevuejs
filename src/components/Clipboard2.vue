@@ -1,9 +1,15 @@
 <template>
   <div class="container">
     <div>
-      <img id="div1" class="box" @click="swap('div1')" />
-      <img id="div2" class="box" @click="swap('div2')" />
-      <img id="div3" class="box" @click="swap('div3')" />
+      <div class="box" @click="swap('div1')">
+        <img id="div1" />
+      </div>
+      <div class="box" @click="swap('div2')">
+        <img id="div2" />
+      </div>
+      <div class="box" @click="swap('div3')">
+        <img id="div3" />
+      </div>
       <button @click="save">click</button>
     </div>
   </div>
@@ -18,7 +24,6 @@ export default {
   },
   methods: {
     swap: function(divSelect) {
-      
       console.log(` ${this.idSelect}`);
 
       var reader = new FileReader();
@@ -30,7 +35,7 @@ export default {
         img.className = "box";
       };
       // Recebe o valor do clipboard
-      document.getElementById(divSelect).onpaste = function(event) { 
+      document.getElementById(divSelect).onpaste = function(event) {
         console.log(`div que foi colado ${divSelect}`);
         let items = event.clipboardData.items;
         for (var itemIndex in items) {
@@ -41,8 +46,8 @@ export default {
         }
       };
     },
-    save: function () {
-      var listId = ['div1', 'div2', 'div3'];
+    save: function() {
+      var listId = ["div1", "div2", "div3"];
       var listTags = [];
       for (let i = 0; i < listId.length; i++) {
         listTags.push({
@@ -52,7 +57,7 @@ export default {
       }
       console.log(listTags);
     }
-  },
+  }
 };
 </script>
 
@@ -73,6 +78,6 @@ export default {
   max-height: 200px;
   margin: 10px 20px;
   background-color: rgb(255, 255, 255);
+  cursor: pointer;
 }
-
 </style>
