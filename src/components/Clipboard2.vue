@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <div>
-      <img id="div1" class="box" @click="metodo('div1')"/>
-      <img id="div2" class="box" @click="metodo('div2')"/>
-      <img id="div3" class="box" @click="metodo('div3')"/>
+      <img id="div1" class="box" @click="swap('div1')" />
+      <img id="div2" class="box" @click="swap('div2')" />
+      <img id="div3" class="box" @click="swap('div3')" />
+      <button @click="save">click</button>
     </div>
   </div>
 </template>
@@ -12,35 +13,46 @@
 export default {
   data() {
     return {
-      selecionado: ''
+      idSelect: ""
     };
   },
   methods: {
-    metodo: function(id){
-      this.selecionado = id;
-      console.log(this.selecionado);
+    swap: function(divSelect) {
+      
+      console.log(` ${this.idSelect}`);
+
+      var reader = new FileReader();
+
+      reader.onload = function(result) {
+        console.log(`div que foi trocada ${divSelect}`);
+        let img = document.getElementById(divSelect);
+        img.src = result.target.result;
+        img.className = "box";
+      };
+      // Recebe o valor do clipboard
+      document.getElementById(divSelect).onpaste = function(event) { 
+        console.log(`div que foi colado ${divSelect}`);
+        let items = event.clipboardData.items;
+        for (var itemIndex in items) {
+          let item = items[itemIndex];
+          if (item.kind == "file") {
+            reader.readAsDataURL(item.getAsFile());
+          }
+        }
+      };
+    },
+    save: function () {
+      var listId = ['div1', 'div2', 'div3'];
+      var listTags = [];
+      for (let i = 0; i < listId.length; i++) {
+        listTags.push({
+          div: listId[i],
+          src: document.getElementById(listId[i]).src
+        });
+      }
+      console.log(listTags);
     }
   },
-  mounted() {
-    var reader = new FileReader();
-
-    reader.onload = function(result) {
-      let img = document.getElementById(this.selecionado);
-      img.src = result.target.result;
-      img.className = "box";
-    };
-    // Recebe o valor do clipboard
-    document.getElementById(this.selecionado).onpaste = function(event) {
-      alert();
-      let items = event.clipboardData.items;
-      for (var itemIndex in items) {
-        let item = items[itemIndex];
-        if (item.kind == "file") {
-          reader.readAsDataURL(item.getAsFile());
-        }
-      }
-    };
-  }
 };
 </script>
 
@@ -61,8 +73,6 @@ export default {
   max-height: 200px;
   margin: 10px 20px;
   background-color: rgb(255, 255, 255);
-  cursor: pointer;
 }
-
 
 </style>
