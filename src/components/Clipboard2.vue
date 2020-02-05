@@ -1,16 +1,25 @@
 <template>
-  <div class="container">
-    <div>
-      <div class="box" @click="swap('div1')">
-        <img id="div1" />
-      </div>
-      <div class="box" @click="swap('div2')">
-        <img id="div2" />
-      </div>
-      <div class="box" @click="swap('div3')">
-        <img id="div3" />
-      </div>
-      <button @click="save">click</button>
+  <div>
+    <select v-model="formatSelected" class="form-control">
+      <option v-for="item in formats" v-bind:key="item" :value="item">{{item}}</option>
+    </select>
+
+    <div class="container" v-if="formatSelected == '1 x 1'">
+      <div id="div1" class="cor ajusta" @click="swap('div1')"></div>
+    </div>
+
+    <div class="container" v-if="formatSelected == '2 x 1'">
+      <div id="div1" class="cor ajusta" @click="swap('div1')"></div>
+      <div id="div2" class="cor ajusta" @click="swap('div2')"></div>
+    </div>
+
+    <div class="container" v-if="formatSelected == '3 x 2'">
+      <div id="div1" class="cor ajusta" @click="swap('div1')"></div>
+      <div id="div2" class="cor ajusta" @click="swap('div2')"></div>
+      <div id="div3" class="cor ajusta" @click="swap('div3')"></div>
+      <div id="div4" class="cor ajusta" @click="swap('div4')"></div>
+      <div id="div5" class="cor ajusta" @click="swap('div5')"></div>
+      <div id="div6" class="cor ajusta" @click="swap('div6')"></div>
     </div>
   </div>
 </template>
@@ -19,24 +28,21 @@
 export default {
   data() {
     return {
-      idSelect: ""
+      idSelect: "",
+      formatSelected: "1 x 1",
+      formats: ["1 x 1", "2 x 1", "3 x 2"]
     };
   },
   methods: {
     swap: function(divSelect) {
-      console.log(` ${this.idSelect}`);
-
       var reader = new FileReader();
 
       reader.onload = function(result) {
-        console.log(`div que foi trocada ${divSelect}`);
         let img = document.getElementById(divSelect);
-        img.src = result.target.result;
-        img.className = "box";
+        img.style = `background-image: url('${result.target.result}');`;
       };
       // Recebe o valor do clipboard
       document.getElementById(divSelect).onpaste = function(event) {
-        console.log(`div que foi colado ${divSelect}`);
         let items = event.clipboardData.items;
         for (var itemIndex in items) {
           let item = items[itemIndex];
@@ -47,7 +53,7 @@ export default {
       };
     },
     save: function() {
-      var listId = ["div1", "div2", "div3"];
+      var listId = ["div1", "div2", "div3", "div4", "div5", "div6"];
       var listTags = [];
       for (let i = 0; i < listId.length; i++) {
         listTags.push({
@@ -62,22 +68,33 @@ export default {
 </script>
 
 <style>
-#container {
-  width: 100%;
-  border-color: blue;
-  text-align: center;
+.container {
+  display: grid;
+  grid-template-rows: 300px 300px 300px;
+  grid-template-columns: 300px 300px;
+
+  grid-gap: 10px;
 }
 
-.main {
-  display: inline-block;
+.cor {
+  background-color: azure;
 }
 
-.box {
+img {
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.ajusta {
+  width: 200px;
+  height: 200px;
   display: inline-block;
-  max-width: 200px;
-  max-height: 200px;
-  margin: 10px 20px;
-  background-color: rgb(255, 255, 255);
-  cursor: pointer;
+  background-size: contain; /* faz a imagem ficar contida dentro do elemento */
+  background-repeat: no-repeat; /* faz a imagem não ser repetida */
+  background-position: center; /* centra a imagem independentemente do tamanho ou largura do elemento */
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
 }
 </style>
